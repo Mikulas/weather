@@ -20,6 +20,7 @@ func main() {
 	var units string
 	var days int
 	var ignoreAlerts bool
+	var ignoreIcon bool
 	var version bool
 
 	// parse flags
@@ -32,6 +33,7 @@ func main() {
 	flag.IntVar(&days, "days", 0, "No. of days to get forecast")
 	flag.IntVar(&days, "d", 0, "No. of days to get forecast (shorthand)")
 	flag.BoolVar(&ignoreAlerts, "ignore-alerts", false, "Ignore alerts in weather output")
+	flag.BoolVar(&ignoreIcon, "ignore-icon", false, "Do not render forecast image in weather output")
 	flag.Parse()
 
 	if version {
@@ -58,7 +60,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	printCurrentWeather(forecast, geolocation, ignoreAlerts)
+	printCurrentWeather(forecast, geolocation, ignoreAlerts, ignoreIcon)
 
 	if days > 1 {
 		printDailyWeather(forecast, days)

@@ -90,18 +90,20 @@ func printWeather(weather Weather, unitsFormat UnitMeasures) {
 	}
 }
 
-func printCurrentWeather(forecast Forecast, geolocation GeoLocation, ignoreAlerts bool) {
+func printCurrentWeather(forecast Forecast, geolocation GeoLocation, ignoreAlerts, ignoreIcon bool) {
 	unitsFormat := UnitFormats[forecast.Flags.Units]
 
-	icon, err := getIcon(forecast.Currently.Icon)
-	if err != nil {
-		printError(err)
-	} else {
-		fmt.Println(icon)
+	if !ignoreIcon {
+		icon, err := getIcon(forecast.Currently.Icon)
+		if err != nil {
+			printError(err)
+		} else {
+			fmt.Printf("%s\n\n", icon)
+		}
 	}
 
 	location := colorstring.Color(fmt.Sprintf("[green]%s in %s", geolocation.City, geolocation.Region))
-	fmt.Printf("\nCurrent weather is %s in %s for %s\n", colorstring.Color("[cyan]"+forecast.Currently.Summary), location, colorstring.Color("[cyan]"+epochFormat(forecast.Currently.Time)))
+	fmt.Printf("Current weather is %s in %s for %s\n", colorstring.Color("[cyan]"+forecast.Currently.Summary), location, colorstring.Color("[cyan]"+epochFormat(forecast.Currently.Time)))
 
 	temp := colorstring.Color(fmt.Sprintf("[magenta]%v%s", forecast.Currently.Temperature, unitsFormat.Degrees))
 	feelslike := colorstring.Color(fmt.Sprintf("[magenta]%v%s", forecast.Currently.ApparentTemperature, unitsFormat.Degrees))
